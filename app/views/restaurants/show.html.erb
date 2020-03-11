@@ -1,0 +1,35 @@
+<h1><%= @restaurant.name %></h1>
+<ul>
+  <li><strong>Cuisine:</strong> <%= @restaurant.category.capitalize %></li>
+  <li><strong>Address:</strong> <%= @restaurant.address %></li>
+  <li><strong>Phone:</strong> <%= @restaurant.phone_number %></li>
+</ul>
+<h3>Reviews</h3>
+<ul>
+  <% @restaurant.reviews.each do |review| %>
+    <li>
+      <p><strong>Rating: </strong><%= review.rating %></p>
+      <p><strong>Review content: </strong><%= review.content %></p>
+    </li>
+  <% end %>
+</ul>
+<br>
+<%= link_to "Edit restaurant information", edit_restaurant_path, class: "btn btn-primary"  %>
+<%= link_to "Back to all restaurants", restaurants_path, class: "btn btn-primary"  %>
+<%= link_to "Delete restaurant", restaurant_path(@restaurant), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary"   %>
+<br>
+<br>
+<h3>Add review for <%= @restaurant.name %></h3>
+<br>
+<%= simple_form_for [@restaurant, @review] do |f| %>
+  <%= f.error_notification %>
+  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+
+  <div class="form-inputs">
+    <%= f.input :content %>
+    <%= f.input :rating %>
+  </div>
+  <div class="form-actions">
+    <%= f.button :submit, class: "btn btn-primary" %>
+  </div>
+<% end %>
